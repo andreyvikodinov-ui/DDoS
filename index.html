@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Что такое DDoS? | Защита и информация об атаках</title>
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
+            background: #0a0c12;
+            color: #eef2ff;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* анимированный градиентный фон для героя */
+        .hero-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 10%, rgba(255, 70, 85, 0.15), rgba(0, 20, 40, 0.9));
+            z-index: -1;
+        }
+
+        /* общие контейнеры */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* хедер */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff4d4d, #ff9f4a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo i {
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: #ff5e5e;
+            margin-right: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ccd6f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.25s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b4a;
+            border-bottom: 2px solid #ff6b4a;
+            padding-bottom: 4px;
+        }
+
+        /* кнопка */
+        .btn-outline {
+            border: 1px solid #ff6b4a;
+            background: transparent;
+            padding: 8px 20px;
+            border-radius: 40px;
+            color: #ff6b4a;
+            font-weight: 600;
+            transition: 0.2s;
+            cursor: default;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 107, 74, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* hero section */
+        .hero {
+            padding: 4rem 0 5rem 0;
+            position: relative;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 800px;
+        }
+
+        .badge {
+            background: rgba(255, 75, 75, 0.2);
+            color: #ff8a7a;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            width: fit-content;
+            backdrop-filter: blur(4px);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(to right, #fff, #ffaa80);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #b9c7e0;
+            max-width: 700px;
+        }
+
+        /* секции общие */
+        section {
+            padding: 5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: inline-block;
+            border-left: 5px solid #ff6b4a;
+            padding-left: 1.2rem;
+        }
+
+        .section-sub {
+            color: #ffaa80;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        /* карточки типов атак */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .card {
+            background: rgba(18, 22, 35, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #ff6b4a;
+            box-shadow: 0 20px 30px -12px rgba(255, 75, 75, 0.2);
+            background: rgba(25, 30, 45, 0.9);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: #ff6b4a;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card p {
+            color: #b4c0e0;
+            font-size: 0.95rem;
+        }
+
+        /* список признаков */
+        .signs-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .sign-item {
+            background: rgba(255, 70, 70, 0.08);
+            backdrop-filter: blur(2px);
+            border-radius: 60px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 107, 74, 0.3);
+            transition: 0.2s;
+        }
+
+        .sign-item i {
+            font-size: 1.2rem;
+            color: #ff7a50;
+        }
+
+        /* методы защиты (две колонки) */
+        .defense-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .defense-card {
+            background: #0e111b;
+            padding: 1.5rem;
+            border-radius: 24px;
+            border-left: 3px solid #ff6b4a;
+        }
+
+        .defense-card i {
+            font-size: 2rem;
+            color: #ffaa80;
+            margin-bottom: 12px;
+        }
+
+        .defense-card h4 {
+            font-size: 1.3rem;
+            margin: 0.5rem 0;
+        }
+
+        /* статистический виджет (простая анимация/счетчик) - интерактив */
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            background: linear-gradient(145deg, #0c0f1a, #080b12);
+            border-radius: 40px;
+            padding: 2rem;
+            margin: 2rem 0 1rem;
+            border: 1px solid #ff6b4a30;
+        }
+
+        .stat-block {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ff8a5c;
+        }
+
+        /* футер */
+        footer {
+            padding: 2rem 0 3rem;
+            text-align: center;
+            color: #7a85a8;
+            font-size: 0.85rem;
+        }
+
+        /* адаптивность */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            .sign-item {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* чисто для оживления - скролл индикатор и hover */
+        .glow-text {
+            color: #ffb085;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            background: none;
+            border: none;
+        }
+
+        /* предупреждение */
+        .disclaimer {
+            background: rgba(0, 0, 0, 0.4);
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 1rem;
+            border-radius: 20px;
+            padding: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero-glow"></div>
+
+<div class="container">
+    <!-- навигация -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-shield-haltered"></i> DDoS<span style="color:#ffaa80;">.Guard</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#about">О DDoS</a></li>
+            <li><a href="#types">Типы атак</a></li>
+            <li><a href="#signs">Признаки</a></li>
+            <li><a href="#defense">Защита</a></li>
+        </ul>
+        <div class="btn-outline"><i class="fas fa-laptop-code"></i> Кибербезопасность</div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="badge"><i class="fas fa-bolt"></i> актуальная угроза 2025</div>
+            <h1>DDoS-атаки: как нарушают работу сетей и как защититься</h1>
+            <p>Распределённая атака типа «отказ в обслуживании» — одна из главных киберугроз. Узнайте, как она работает, какие виды существуют и какие меры помогут спасти ваш бизнес и проекты.</p>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <a href="#about" style="background: #ff6b4a; padding: 12px 28px; border-radius: 40px; color: white; font-weight: bold;">Изучить механизм <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- что такое DDoS -->
+    <section id="about">
+        <div class="section-title">Что такое DDoS?</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between;">
+            <div style="flex: 2; min-width: 240px;">
+                <p style="font-size: 1.1rem; margin-bottom: 1rem;"><strong class="glow-text">DDoS (Distributed Denial of Service)</strong> — это кибератака, при которой злоумышленники перегружают сервер, сеть или веб-ресурс огромным потоком ложного трафика с множества скомпрометированных устройств (ботнетов).</p>
+                <p style="margin-bottom: 1rem;">Цель — сделать ресурс недоступным для легитимных пользователей. В отличие от DoS-атаки с одного источника, DDoS использует тысячи IP-адресов, что делает её мощнее и труднее для блокировки.</p>
+                <p><i class="fas fa-chart-line" style="color:#ff7a50;"></i> Согласно статистике, количество DDoS-атак растёт ежегодно на 25–30%, а средняя мощность атак превышает 1 Тбит/с.</p>
+            </div>
+            <div style="flex: 1; background: #0f111e; border-radius: 28px; padding: 1.5rem; text-align: center;">
+                <i class="fas fa-network-wired" style="font-size: 3.5rem; color: #ff7a50;"></i>
+                <p style="margin-top: 12px;"><strong>Ботнет-сеть</strong><br>Тысячи заражённых устройств</p>
+                <div style="height: 4px; background: #ff6b4a; width: 60px; margin: 0.8rem auto;"></div>
+                <p style="font-size: 0.85rem;">🖥️ компьютеры, IoT, серверы → атакуют цель</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- типы DDoS-атак -->
+    <section id="types">
+        <div class="section-title">Основные типы DDoS-атак</div>
+        <div class="section-sub"><i class="fas fa-diagram-project"></i> разные векторы — разные последствия</div>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-tachometer-alt"></i></div>
+                <h3>Volume-based (объёмные)</h3>
+                <p>Перегрузка пропускной способности канала. UDP-флуд, ICMP, амплификационные атаки (DNS/NTP). Единица измерения — бит/с. Цель — насытить интернет-канал жертвы.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-microchip"></i></div>
+                <h3>Protocol (протокольные)</h3>
+                <p>Эксплуатируют слабости сетевых протоколов: SYN-флуд, Ping of Death, атаки на состояние соединения. Истощают ресурсы межсетевых экранов и серверов (пакеты/с).</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-layer-group"></i></div>
+                <h3>Application Layer (L7)</h3>
+                <p>Нацелены на веб-приложения: HTTP-флуд с медленными запросами (Slowloris), уязвимости в логике. Требуют меньше трафика, но легко кладут сервер БД или CMS.</p>
+            </div>
+        </div>
+        <p style="margin-top: 2rem; background: #0a0d1a; padding: 1rem; border-radius: 20px; text-align: center;"><i class="fas fa-lightbulb"></i> Более 65% DDoS-атак в 2024 году были многоуровневыми — комбинировали L3-L4 с прикладным уровнем.</p>
+    </section>
+
+    <!-- признаки атаки -->
+    <section id="signs">
+        <div class="section-title">Как распознать DDoS-атаку?</div>
+        <div class="signs-list">
+            <div class="sign-item"><i class="fas fa-hourglass-half"></i> Резкое замедление работы сайта или приложения</div>
+            <div class="sign-item"><i class="fas fa-ban"></i> Массовые ошибки 503 / недоступность сервера</div>
+            <div class="sign-item"><i class="fas fa-chart-simple"></i> Аномальный всплеск сетевого трафика</div>
+            <div class="sign-item"><i class="fas fa-database"></i> Высокая загрузка CPU / памяти без очевидных причин</div>
+            <div class="sign-item"><i class="fas fa-globe"></i> Запросы с одинаковых диапазонов IP или подозрительные User-Agent</div>
+        </div>
+        <div class="stats" id="statsWidget">
+            <div class="stat-block">
+                <div class="stat-number" id="statAttacks">⏳</div>
+                <div>суточных атак (в мире)</div>
+            </div>
+            <div class="stat-block">
+                <div class="stat-number" id="statPower">🌊</div>
+                <div>средняя мощность (Гбит/с)</div>
+            </div>
+            <div class="stat-block">
+                <div class="stat-number" id="statCost">💰</div>
+                <div>ущерб для бизнеса/час</div>
+            </div>
+        </div>
+        <p style="font-size: 0.8rem; text-align: center;">* Источник аналитика киберугроз, 2025</p>
+    </section>
+
+    <!-- методы защиты -->
+    <section id="defense">
+        <div class="section-title">Методы защиты от DDoS</div>
+        <div class="defense-grid">
+            <div class="defense-card">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h4>Облачная фильтрация (CDN / scrubbing)</h4>
+                <p>Провайдеры типа Cloudflare, Akamai, AWS Shield фильтруют вредоносный трафик до того, как он достигнет вашего сервера.</p>
+            </div>
+            <div class="defense-card">
+                <i class="fas fa-tachometer-alt"></i>
+                <h4>Rate Limiting & Web Application Firewall (WAF)</h4>
+                <p>Лимит запросов с одного IP, блокировка ботов и аномалий на уровне L7, защита от SQLi и брутфорса.</p>
+            </div>
+            <div class="defense-card">
+                <i class="fas fa-shield-virus"></i>
+                <h4>Anycast-сеть</h4>
+                <p>Распределение трафика между множеством дата-центров: атака «размазывается» по узлам, сохраняя доступность.</p>
+            </div>
+            <div class="defense-card">
+                <i class="fas fa-chart-network"></i>
+                <h4>Мониторинг + автоответчик</h4>
+                <p>Системы обнаружения вторжений (IDS/IPS) в реальном времени, автоматическое добавление правил фильтрации.</p>
+            </div>
+        </div>
+        <div style="margin-top: 2rem; background: linear-gradient(95deg, #1e1a2f20, #0b0f1a); border-radius: 24px; padding: 1rem 1.8rem;">
+            <i class="fas fa-exclamation-triangle" style="color: #ffbc6e;"></i>  <strong>Важно:</strong> Использование надежного хостинга с DDoS-защитой и резервные каналы связи критически важны даже для малых онлайн-проектов.
+        </div>
+    </section>
+
+    <!-- дополнительный блок: интересные факты -->
+    <section style="border-bottom: none;">
+        <div class="section-title">Интересные факты</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 1.8rem; justify-content: space-between;">
+            <div style="background: #0c0f1a; border-radius: 24px; padding: 1.5rem; flex:1;">
+                <i class="fas fa-history"></i>
+                <h3 style="margin-top: 6px;">Первая DDoS-атака</h3>
+                <p>1999 год, университет Миннесоты. Одна из первых распределенных атак вывела из строя сеть на 220 систем.</p>
+            </div>
+            <div style="background: #0c0f1a; border-radius: 24px; padding: 1.5rem; flex:1;">
+                <i class="fas fa-robot"></i>
+                <h3 style="margin-top: 6px;">Ботнет Mirai (2016)</h3>
+                <p>Атака с использованием IoT-устройств (камер, роутеров) мощностью 1.2 Тбит/с — крупнейшая на тот момент.</p>
+            </div>
+            <div style="background: #0c0f1a; border-radius: 24px; padding: 1.5rem; flex:1;">
+                <i class="fas fa-charging-station"></i>
+                <h3 style="margin-top: 6px;">Рекордная мощность</h3>
+                <p>В 2023 году зафиксирована атака более 3.5 Тбит/с — отражена благодаря распределенной фильтрации.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <p><i class="fas fa-shield-alt"></i> Материал носит образовательный характер. Понимание DDoS-атак — первый шаг к построению устойчивой инфраструктуры.</p>
+        <p style="margin-top: 8px;">© 2025 DDoS.Guard — информация о киберугрозах | <i class="fab fa-github"></i> Образовательный проект</p>
+        <div class="disclaimer">
+            ⚠️ Этот сайт не пропагандирует вредоносные действия. Информация представлена для повышения осведомленности о безопасности.
+        </div>
+    </footer>
+</div>
+
+<!-- небольшой скрипт для анимации статистики (счётчики) -->
+<script>
+    (function() {
+        // функция для анимированного счётчика с динамическими данными
+        const statAttacks = document.getElementById('statAttacks');
+        const statPower = document.getElementById('statPower');
+        const statCost = document.getElementById('statCost');
+        
+        // статистика основана на реальных оценках (2025)
+        // ежесуточно регистрируется около 5-8 тыс DDoS-атак, покажем ~7000
+        // средняя мощность атаки: ~1.8 Гбит/с (актуальные данные)
+        // средний ущерб: $50k - $200k в час для крупных компаний, покажем $120k
+        const targetAttacks = 7620;
+        const targetPower = 1.84;
+        const targetCost = 124; // тыс. долларов в час
+        
+        let currentAttacks = 0;
+        let currentPower = 0;
+        let currentCost = 0;
+        
+        function animateNumber(element, start, end, suffix, isFloat = false) {
+            let current = start;
+            const step = Math.ceil((end - start) / 60);
+            const timer = setInterval(() => {
+                if (isFloat) {
+                    current += (end - start) / 50;
+                    if (current >= end) {
+                        current = end;
+                        clearInterval(timer);
+                    }
+                    element.innerText = current.toFixed(2) + suffix;
+                } else {
+                    current += step;
+                    if (current >= end) {
+                        current = end;
+                        clearInterval(timer);
+                    }
+                    element.innerText = Math.floor(current) + suffix;
+                }
+            }, 20);
+        }
+        
+        // опция наблюдения за появлением секции статистики в зоне видимости
+        const statsWidget = document.getElementById('statsWidget');
+        let animated = false;
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !animated) {
+                    animated = true;
+                    animateNumber(statAttacks, 0, targetAttacks, "+ атак/сутки", false);
+                    animateNumber(statPower, 0, targetPower, " Гбит/с", true);
+                    animateNumber(statCost, 0, targetCost, " тыс. $/час", true);
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.4 });
+        
+        if(statsWidget) observer.observe(statsWidget);
+        
+        // начальное состояние чисел (как заглушка)
+        statAttacks.innerText = "📊";
+        statPower.innerText = "📈";
+        statCost.innerText = "💸";
+        
+        // также добавим динамическую подсветку навигации при скролле (не обязательно, но приятно)
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        
+        function setActiveLink() {
+            let current = '';
+            const scrollPos = window.scrollY + 150;
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.style.borderBottom = 'none';
+                link.style.paddingBottom = '0px';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.style.borderBottom = '2px solid #ff6b4a';
+                    link.style.paddingBottom = '4px';
+                } else {
+                    link.style.borderBottom = 'none';
+                }
+            });
+        }
+        window.addEventListener('scroll', setActiveLink);
+        setActiveLink();
+    })();
+</script>
+</body>
+</html>
